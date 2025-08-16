@@ -422,7 +422,11 @@ class EmailNotifier:
                 response = resend.Emails.send(email_data)
                 
                 # Check if response contains an ID (success indicator)
-                if response and hasattr(response, 'id'):
+                if response and isinstance(response, dict) and 'id' in response:
+                    logger.info(f"Email sent successfully via Resend to {len(recipients)} recipients (ID: {response['id']})")
+                    return True, None
+                elif response and hasattr(response, 'id'):
+                    # Fallback for object-style response
                     logger.info(f"Email sent successfully via Resend to {len(recipients)} recipients (ID: {response.id})")
                     return True, None
                 else:

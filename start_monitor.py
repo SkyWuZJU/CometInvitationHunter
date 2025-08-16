@@ -1,61 +1,62 @@
 #!/usr/bin/env python3
 """
 Startup script for the Comet Invitation Hunter monitoring service.
+This script starts the background monitoring service that continuously
+searches for new Comet invitation posts and sends email notifications.
 """
 
-import os
 import sys
-import logging
+import os
+import signal
+import time
 from pathlib import Path
 
-# Add backend directory to Python path
-backend_dir = Path(__file__).parent / "backend"
-sys.path.insert(0, str(backend_dir))
+# Add backend to Python path
+backend_path = Path(__file__).parent / "backend"
+sys.path.insert(0, str(backend_path))
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-def load_environment():
-    """Load environment variables from config files"""
-    # Try to load development config first
-    dev_config = Path(__file__).parent / "config" / "development.env"
-    if dev_config.exists():
-        logger.info(f"Loading development config from {dev_config}")
-        with open(dev_config, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#') and '=' in line:
-                    key, value = line.split('=', 1)
-                    os.environ[key] = value
-    else:
-        logger.warning("Development config file not found")
+def signal_handler(signum, frame):
+    """Handle shutdown signals gracefully"""
+    print(f"\n🛑 Received signal {signum}, shutting down monitoring service...")
+    sys.exit(0)
 
 def main():
-    """Main entry point"""
-    logger.info("Starting Comet Invitation Hunter monitoring service...")
+    """Main function to start the monitoring service"""
+    print("🚀 Starting Comet Invitation Hunter Monitoring Service")
+    print("=" * 60)
     
-    # Load environment configuration
-    load_environment()
-    
-    # Import and run the monitor
     try:
-        # Import here after path is set up
+        # Import and initialize the monitor
+        from monitor.main import CometMonitor
+        
+        print("✓ Importing monitoring components...")
+        monitor = CometMonitor()
+        
+        print("✓ Monitor initialized successfully")
+        print(f"✓ Monitoring interval: {monitor.monitoring_interval} seconds")
+        print(f"✓ Search keywords: {len(monitor.search_keywords)} configured")
+        
+        # Set up signal handlers for graceful shutdown
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
+        
+        print("=" * 60)
+        print("🔍 Starting continuous monitoring...")
+        print("Press Ctrl+C to stop")
+        print("=" * 60)
+        
+        # Start the monitoring loop (async)
         import asyncio
-        sys.path.append(os.path.join(os.path.dirname(__file__), 'monitor'))
-        from monitor.main import main as monitor_main
+        asyncio.run(monitor.start_monitoring())
         
-        # Run the monitoring service
-        asyncio.run(monitor_main())
-        
+    except KeyboardInterrupt:
+        print("\n🛑 Monitoring service stopped by user")
     except ImportError as e:
-        logger.error(f"Failed to import monitoring service: {e}")
+        print(f"✗ Import error: {e}")
+        print("Make sure all dependencies are installed")
         sys.exit(1)
     except Exception as e:
-        logger.error(f"Monitoring service failed: {e}")
+        print(f"✗ Error starting monitoring service: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

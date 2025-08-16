@@ -7,7 +7,9 @@ class Config:
     def __init__(self, env_file: Optional[str] = None):
         # Load .env file by default
         if env_file is None:
-            env_file = '.env'
+            # Look for .env in the backend directory (where this config.py file is located)
+            backend_dir = os.path.dirname(os.path.abspath(__file__))
+            env_file = os.path.join(backend_dir, '.env')
         if env_file:
             self.load_env_file(env_file)
     

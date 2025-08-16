@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-08-16T11:12:50.595676",
+  "overall_success": false,
+  "total_tests": 9,
+  "passed_tests": 7,
+  "results": [
+    {
+      "test": "System Health Check",
+      "success": false,
+      "message": "Health endpoint returned 503",
+      "timestamp": "2025-08-16T11:12:49.650021",
+      "details": null
+    },
+    {
+      "test": "Database Access",
+      "success": true,
+      "message": "Database accessible with 2 users",
+      "timestamp": "2025-08-16T11:12:49.651582",
+      "details": null
+    },
+    {
+      "test": "Verified Users",
+      "success": true,
+      "message": "Found 2 verified users",
+      "timestamp": "2025-08-16T11:12:49.651621",
+      "details": [
+        [
+          "your_email@example.com",
+          "2025-08-03 06:37:53.476580"
+        ],
+        [
+          "test-validation@example.com",
+          "2025-08-16 03:12:19.244279"
+        ]
+      ]
+    },
+    {
+      "test": "User Verification Storage",
+      "success": true,
+      "message": "Email test-validation@example.com stored successfully",
+      "timestamp": "2025-08-16T11:12:49.660490",
+      "details": null
+    },
+    {
+      "test": "Posts in Database",
+      "success": true,
+      "message": "Found 5 posts in database",
+      "timestamp": "2025-08-16T11:12:49.662090",
+      "details": null
+    },
+    {
+      "test": "Email Logs",
+      "success": true,
+      "message": "Found 6 email log entries",
+      "timestamp": "2025-08-16T11:12:49.662110",
+      "details": null
+    },
+    {
+      "test": "Latest Post Activity",
+      "success": true,
+      "message": "Most recent post: 2025-08-02 13:36:46.648313",
+      "timestamp": "2025-08-16T11:12:49.662116",
+      "details": null
+    },
+    {
+      "test": "Latest Email Activity",
+      "success": true,
+      "message": "Most recent email: 2025-08-16 02:26:49.741868",
+      "timestamp": "2025-08-16T11:12:49.662125",
+      "details": null
+    },
+    {
+      "test": "Email Service Configuration",
+      "success": false,
+      "message": "Health endpoint not accessible",
+      "timestamp": "2025-08-16T11:12:50.594645",
+      "details": null
+    }
+  ]
+}
