@@ -58,7 +58,7 @@ class Config:
     
     @property
     def from_email(self) -> str:
-        return os.getenv('FROM_EMAIL', 'onboarding@resend.dev')
+        return os.getenv('FROM_EMAIL', 'comethunter@skywu.me')
     
     # Legacy SMTP support (fallback)
     @property

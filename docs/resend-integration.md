@@ -52,7 +52,7 @@ The email notification system has been upgraded from SMTP to use Resend's HTTP A
 ```bash
 # Required
 RESEND_API_KEY=re_your_api_key_here
-FROM_EMAIL=onboarding@resend.dev
+FROM_EMAIL=comethunter@skywu.me
 
 # Optional (for custom domain)
 FROM_EMAIL=noreply@yourdomain.com
@@ -60,7 +60,7 @@ FROM_EMAIL=noreply@yourdomain.com
 
 ### Current Setup
 - **API Key**: `re_K2vhhSif_BstJAzfSQaNxB5JUxjcnBVvtLet`
-- **From Email**: `onboarding@resend.dev` (development)
+- **From Email**: `comethunter@skywu.me` (production)
 - **Future**: Will be updated to custom domain
 
 ## Email Template Structure
@@ -83,7 +83,7 @@ FROM_EMAIL=noreply@yourdomain.com
 ### Resend API Call Structure
 ```python
 email_data = {
-    "from": "Comet Hunter <onboarding@resend.dev>",
+    "from": "Comet Hunter <comethunter@skywu.me>",
     "to": ["user1@example.com", "user2@example.com"],
     "subject": "🚀 New Comet Invitations Found (2 posts)",
     "html": html_content,
