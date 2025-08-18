@@ -68,7 +68,7 @@ class UtoolsClient:
         self.api_key = api_key
         self.base_url = base_url
         self.session = requests.Session()
-        self.session.timeout = 30
+        self.session.timeout = 45
         
         # Rate limiting tracking
         self._last_request_time = 0
@@ -130,7 +130,21 @@ class UtoolsClient:
                 self._last_request_time = time.time()
                 
                 logger.debug(f"Making request to {endpoint} (attempt {attempt + 1})")
-                response = self.session.get(url, params=params)
+                logger.debug(f"URL: {url}")
+                logger.debug(f"Params: {params}")
+                
+                # Build URL with parameters for debugging
+                import urllib.parse
+                debug_url = f"{url}?{urllib.parse.urlencode(params)}"
+                logger.debug(f"Full URL: {debug_url}")
+                
+                # Ensure proper URL encoding for special characters
+                import urllib.parse
+                encoded_params = {k: str(v) for k, v in params.items()}
+                response = self.session.get(url, params=encoded_params)
+                
+                logger.debug(f"Response status: {response.status_code}")
+                logger.debug(f"Response text: {response.text[:500]}...")
                 
                 # Handle HTTP errors
                 if response.status_code == 429:
@@ -312,16 +326,14 @@ class UtoolsClient:
             For precise minute-level filtering, additional client-side filtering
             of results may be needed based on created_at timestamps.
         """
-        minutes_ago = monitoring_interval_seconds // 60
-        since_date = self.get_since_time(minutes_ago)
+        logger.info(f"Searching recent tweets for keywords: '{keywords}'")
         
-        logger.info(f"Searching recent tweets since {since_date} (last {minutes_ago} minutes)")
-        
+        # Skip the since parameter as it causes "Unknown API error"
+        # Instead, we'll filter client-side based on created_at timestamps
         results, _ = self.search_tweets(
             keywords=keywords,
             count=count,
-            product=product,
-            since=since_date
+            product=product
         )
         return results
     
@@ -340,16 +352,14 @@ class UtoolsClient:
         Returns:
             List of SearchResult objects
         """
-        minutes_ago = monitoring_interval_seconds // 60
-        since_date = self.get_since_time(minutes_ago)
+        logger.info(f"Searching recent tweets with pagination for keywords: '{keywords}'")
         
-        logger.info(f"Searching recent tweets with pagination since {since_date} (last {minutes_ago} minutes)")
-        
+        # Skip the since parameter as it causes "Unknown API error"
+        # Instead, we'll filter client-side based on created_at timestamps
         return self.search_tweets_paginated(
             keywords=keywords,
             max_results=max_results,
-            product=product,
-            since=since_date
+            product=product
         )
     
     def _parse_search_results(self, search_data: Dict[str, Any]) -> List[SearchResult]:
