@@ -240,7 +240,8 @@ class UtoolsClient:
     
     def search_tweets_paginated(self, keywords: str, max_results: int = 200, 
                                product: str = "Latest", since: Optional[str] = None,
-                               phrase: Optional[str] = None) -> List[SearchResult]:
+                               phrase: Optional[str] = None, 
+                               time_filter_seconds: Optional[int] = None) -> List[SearchResult]:
         """
         Search for tweets with automatic pagination to get more results.
         
@@ -250,6 +251,7 @@ class UtoolsClient:
             product: Search product type (Latest, Top, etc.)
             since: Start time filter (optional, format: YYYY-MM-DD)
             phrase: Exact phrase to match (optional, for future use)
+            time_filter_seconds: Filter tweets by age in seconds (stop pagination when tweets are too old)
             
         Returns:
             List of SearchResult objects (up to max_results)
@@ -264,6 +266,12 @@ class UtoolsClient:
         page_count = 0
         
         logger.info(f"Starting paginated search for '{keywords}' (max_results: {max_results})")
+        
+        # Calculate cutoff time for filtering
+        cutoff_time = None
+        if time_filter_seconds:
+            cutoff_time = datetime.now() - timedelta(seconds=time_filter_seconds)
+            logger.info(f"Time filter: stopping when tweets are older than {cutoff_time}")
         
         while len(all_results) < max_results and page_count < max_pages:
             try:
@@ -287,8 +295,32 @@ class UtoolsClient:
                     logger.info("No more results found, stopping pagination")
                     break
                 
-                all_results.extend(results)
-                logger.info(f"Page {page_count}: Got {len(results)} results, total: {len(all_results)}")
+                # Apply time-based filtering during pagination
+                filtered_results = []
+                stop_pagination = False
+                
+                for result in results:
+                    if cutoff_time:
+                        try:
+                            # Parse tweet creation time
+                            tweet_time = datetime.strptime(result.created_at, '%a %b %d %H:%M:%S %z %Y')
+                            if tweet_time < cutoff_time:
+                                logger.info(f"Found tweet older than cutoff ({tweet_time} < {cutoff_time}), stopping pagination")
+                                stop_pagination = True
+                                break
+                        except ValueError:
+                            # If we can't parse the time, include the tweet to be safe
+                            logger.debug(f"Could not parse tweet time: {result.created_at}")
+                    
+                    filtered_results.append(result)
+                
+                all_results.extend(filtered_results)
+                logger.info(f"Page {page_count}: Got {len(results)} results, kept {len(filtered_results)}, total: {len(all_results)}")
+                
+                # Stop pagination if we found tweets older than cutoff
+                if stop_pagination:
+                    logger.info("Stopping pagination due to time filter")
+                    break
                 
                 # Check if we have a cursor for next page
                 if not next_cursor:
@@ -355,11 +387,12 @@ class UtoolsClient:
         logger.info(f"Searching recent tweets with pagination for keywords: '{keywords}'")
         
         # Skip the since parameter as it causes "Unknown API error"
-        # Instead, we'll filter client-side based on created_at timestamps
+        # Instead, we'll filter client-side during pagination based on created_at timestamps
         return self.search_tweets_paginated(
             keywords=keywords,
             max_results=max_results,
-            product=product
+            product=product,
+            time_filter_seconds=monitoring_interval_seconds
         )
     
     def _parse_search_results(self, search_data: Dict[str, Any]) -> List[SearchResult]:

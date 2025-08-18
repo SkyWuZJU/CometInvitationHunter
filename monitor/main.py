@@ -865,30 +865,12 @@ class CometMonitor:
             logger.error("Failed to get database connection")
             return new_posts
         
-        # Calculate cutoff time for monitoring interval
-        from datetime import datetime, timedelta, timezone
-        cutoff_time = datetime.now(timezone.utc) - timedelta(seconds=self.monitoring_interval)
-        logger.info(f"Filtering posts after {cutoff_time.strftime('%Y-%m-%d %H:%M:%S')} UTC")
+        logger.info(f"Processing {len(results)} posts from time-filtered search")
         
         try:
             for result in results:
                 try:
-                    # Parse tweet creation time
-                    try:
-                        # Twitter date format: "Sun Aug 17 02:48:04 +0000 2025"
-                        from datetime import datetime
-                        tweet_time = datetime.strptime(result.created_at, '%a %b %d %H:%M:%S %z %Y')
-                    except ValueError:
-                        # Fallback if parsing fails
-                        logger.debug(f"Could not parse tweet time: {result.created_at}")
-                        tweet_time = datetime.now()
-                    
-                    # Skip posts older than monitoring interval
-                    if tweet_time < cutoff_time:
-                        logger.debug(f"Post {result.tweet_id} is too old ({tweet_time}), skipping")
-                        continue
-                    
-                    # Check if already processed
+                    # Check if already processed (time filtering is now done during pagination)
                     if is_post_processed(db, result.tweet_id):
                         logger.debug(f"Post {result.tweet_id} already processed, skipping")
                         continue
@@ -924,7 +906,7 @@ class CometMonitor:
         finally:
             db.close()
         
-        logger.info(f"Processed {len(new_posts)} new posts from the last {self.monitoring_interval} seconds")
+        logger.info(f"Processed {len(new_posts)} new posts from time-filtered search")
         return new_posts
     
     async def _send_notifications(self, posts: List[ClassifiedPost]):
