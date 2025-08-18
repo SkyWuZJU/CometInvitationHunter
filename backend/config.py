@@ -25,7 +25,9 @@ class Config:
     
     @property
     def database_url(self) -> str:
-        return os.getenv('DATABASE_URL', 'sqlite:///./comet_hunter.db')
+        # Use project root for consistent database location
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        return os.getenv('DATABASE_URL', f'sqlite:///{os.path.join(project_root, "comet_hunter.db")}')
     
     @property
     def utools_api_key(self) -> str:

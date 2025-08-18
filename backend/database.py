@@ -46,8 +46,10 @@ def retry_with_backoff(config):
         return wrapper
     return decorator
 
-# Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./comet_hunter.db")
+# Database configuration - Use project root for consistent path
+import os
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(project_root, 'comet_hunter.db')}")
 
 # SQLAlchemy setup
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
