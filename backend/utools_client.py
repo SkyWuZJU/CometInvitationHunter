@@ -270,8 +270,8 @@ class UtoolsClient:
         # Calculate cutoff time for filtering
         cutoff_time = None
         if time_filter_seconds:
-            cutoff_time = datetime.now() - timedelta(seconds=time_filter_seconds)
-            logger.info(f"Time filter: stopping when tweets are older than {cutoff_time}")
+            cutoff_time = datetime.now() - timedelta(seconds=time_filter_seconds + 60)
+            logger.info(f"Time filter: stopping when tweets are older than {cutoff_time} (including 60s processing buffer)")
         
         while len(all_results) < max_results and page_count < max_pages:
             try:
