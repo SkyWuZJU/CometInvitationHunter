@@ -18,22 +18,21 @@ logger = logging.getLogger(__name__)
 # These keywords are used to search for Comet invitation posts on X/Twitter
 # Each keyword should be specific enough to find relevant posts but broad enough to catch variations
 _RAW_SEARCH_KEYWORDS = [
-    "perplexity.ai/browser/claim",    # Direct invitation links
-    "comet invitation",               # General invitation mentions
-    "comet invite",                   # Shortened invitation mentions
-    # "comet browser invite",           # Specific browser invite mentions
-    # "comet access",                   # Access-related posts
-    "perplexity browser invite",      # Perplexity-specific browser invites
-    # "ai browser invite"               # General AI browser invites
+    "perplexity.ai/browser/claim", 
+    "comet invitation",
+    "comet invite",
+    # "comet browser invite",
+    # "comet access",
+    "perplexity browser invite",
+    "perplexity browser invitation",
+    # "ai browser invite"
 ]
 
 # Monitoring Parameters
 # These control how often the system checks for new posts and API behavior
 
 # How often to run monitoring cycles (in seconds)
-# Default: 300 seconds (5 minutes)
-# Decrease for more frequent checks, increase to reduce API usage
-_RAW_MONITORING_INTERVAL = 300
+_RAW_MONITORING_INTERVAL = 360
 
 # Maximum number of search results to retrieve per keyword
 # Default: 200 results per keyword
@@ -48,7 +47,7 @@ _RAW_SEARCH_PRODUCT = "Latest"
 # Delay between keyword searches (in seconds)
 # Default: 2 seconds between searches
 # Increase if hitting rate limits, decrease for faster processing
-_RAW_API_REQUEST_DELAY = 2
+_RAW_API_REQUEST_DELAY = 3
 
 # Validate configuration and export validated values
 def _validate_and_export_config() -> Dict[str, Any]:

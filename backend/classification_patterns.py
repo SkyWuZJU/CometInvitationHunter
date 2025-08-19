@@ -33,30 +33,23 @@ _RAW_INVITATION_PATTERNS = [
 # These keywords indicate that the post requires users to perform specific actions
 # (like following, DMing, commenting) before receiving an invitation
 _RAW_CONDITIONAL_KEYWORDS = [
-    'dm me',                # Direct message requests
-    'send dm',              # Send direct message
-    'direct message',       # Full direct message phrase
-    'follow and dm',        # Follow then DM requirement
-    'follow me and dm',     # Follow me then DM requirement
-    'comment below',        # Comment on post requirement
-    'reply below',          # Reply to post requirement
-    'retweet and dm',       # Retweet then DM requirement
-    'rt and dm',            # RT (retweet) then DM requirement
-    'follow for invite',    # Follow to get invite
-    'follow to get',        # Follow to get something
-    'like and dm',          # Like then DM requirement
-    'like and comment'      # Like and comment requirement
+    'DM',
+    'comment',
+    'follow',
+    'retweet',
+    'message'
 ]
 
 # Comet-Related Keywords
 # These keywords must be present in posts to be considered relevant to Comet invitations
 # Used to filter out false positives from generic invitation/sharing posts
 _RAW_COMET_KEYWORDS = [
-    'comet',                    # Direct comet mentions
-    'perplexity browser',       # Perplexity browser references
-    'ai browser',               # AI browser references
-    'perplexity.ai/browser',    # Direct URL references
-    'browser invite'            # Browser invitation mentions
+    'comet',
+    'perplexity',
+    'ai',
+    'browser',
+    'invite',
+    'invitation',
 ]
 
 # Validate configuration and export validated values
