@@ -44,7 +44,7 @@ _RAW_CONDITIONAL_KEYWORDS = [
 # These keywords must be present in posts to be considered relevant to Comet invitations
 # Used to filter out false positives from generic invitation/sharing posts
 _RAW_COMET_KEYWORDS = [
-    'comet',
+    # 'comet', #
     'perplexity',
     'ai',
     'browser',

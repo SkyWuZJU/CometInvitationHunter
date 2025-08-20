@@ -7,7 +7,7 @@ import json
 import time
 import logging
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
@@ -270,7 +270,7 @@ class UtoolsClient:
         # Calculate cutoff time for filtering
         cutoff_time = None
         if time_filter_seconds:
-            cutoff_time = datetime.now() - timedelta(seconds=time_filter_seconds + 60)
+            cutoff_time = datetime.now(timezone.utc) - timedelta(seconds=time_filter_seconds + 60)
             logger.info(f"Time filter: stopping when tweets are older than {cutoff_time} (including 60s processing buffer)")
         
         while len(all_results) < max_results and page_count < max_pages:

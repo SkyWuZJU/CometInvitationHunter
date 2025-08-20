@@ -48,3 +48,23 @@ A system to monitor Twitter for invitation codes and automatically respond to th
 
 - Development: `config/development.env`
 - Production: `config/production.env`
+
+## Production Deployment
+Files Related:
+- Dockerfile - Lightweight container setup
+- docker-compose.yml - Service orchestration
+- nginx.conf - Reverse proxy configuration
+- deploy.sh - One-command deployment script
+- deploy/production-setup.md - Complete setup guide
+
+Key Features:
+- Uses SQLite for simplicity (no external DB needed)
+- Single Docker container for backend
+- Nginx serves frontend + proxies API
+- Manual updates via ./deploy.sh
+- Configured for comethunter.skywu.me
+
+To Deploy:
+1. Upload to your Linux server
+2. Run ./deploy.sh
+3. Add SSL with certbot --nginx -d comethunter.skywu.me
