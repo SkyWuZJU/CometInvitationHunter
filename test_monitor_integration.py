@@ -19,10 +19,8 @@ def load_environment():
     os.environ['DATABASE_URL'] = 'sqlite:///./test_comet_hunter.db'
     os.environ['UTOOLS_API_KEY'] = 'test_key'
     os.environ['MONITORING_INTERVAL'] = '10'  # Short interval for testing
-    os.environ['SMTP_SERVER'] = 'localhost'
-    os.environ['SMTP_PORT'] = '587'
-    os.environ['SMTP_USERNAME'] = 'test@example.com'
-    os.environ['SMTP_PASSWORD'] = 'test_password'
+    os.environ['RESEND_API_KEY'] = 'test_resend_key'
+    os.environ['FROM_EMAIL'] = 'test@example.com'
 
 async def test_monitor_startup():
     """Test that the monitor can start up without errors"""

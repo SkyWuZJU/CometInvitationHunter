@@ -62,23 +62,6 @@ class Config:
     def from_email(self) -> str:
         return os.getenv('FROM_EMAIL', 'comethunter@skywu.me')
     
-    # Legacy SMTP support (fallback)
-    @property
-    def smtp_server(self) -> str:
-        return os.getenv('SMTP_SERVER', 'smtp.gmail.com')
-    
-    @property
-    def smtp_port(self) -> int:
-        return int(os.getenv('SMTP_PORT', '587'))
-    
-    @property
-    def smtp_username(self) -> str:
-        return os.getenv('SMTP_USERNAME', '')
-    
-    @property
-    def smtp_password(self) -> str:
-        return os.getenv('SMTP_PASSWORD', '')
-    
     @property
     def monitoring_interval(self) -> int:
         return int(os.getenv('MONITORING_INTERVAL', '300'))  # 5 minutes default

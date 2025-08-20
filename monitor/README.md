@@ -36,14 +36,11 @@ The service uses the following environment variables:
 ```bash
 # Required
 UTOOLS_API_KEY=your_utools_api_key
-SMTP_USERNAME=your_email@gmail.com
-SMTP_PASSWORD=your_app_password
+RESEND_API_KEY=your_resend_api_key
+FROM_EMAIL=your_verified_email@yourdomain.com
 
 # Optional
 MONITORING_INTERVAL=300  # seconds between cycles (default: 5 minutes)
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-FROM_EMAIL=your_email@gmail.com
 LOG_LEVEL=INFO
 ```
 
@@ -59,8 +56,8 @@ python start_monitor.py
 ```bash
 # Set production environment variables
 export UTOOLS_API_KEY="your_production_key"
-export SMTP_USERNAME="your_production_email"
-export SMTP_PASSWORD="your_production_password"
+export RESEND_API_KEY="your_resend_api_key"
+export FROM_EMAIL="your_verified_email@yourdomain.com"
 
 # Run the service
 python start_monitor.py
