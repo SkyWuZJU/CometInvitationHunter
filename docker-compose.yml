@@ -29,3 +29,16 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+  monitor:
+    build: .
+    container_name: comet-monitor
+    command: python monitor/main.py
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - config/production.env
+    restart: unless-stopped
+    depends_on:
+      - backend

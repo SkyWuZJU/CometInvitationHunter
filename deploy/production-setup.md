@@ -105,13 +105,16 @@ sudo systemctl reload nginx
 
 ### 6. Deploy
 ```bash
-# Start backend only (frontend is served directly by nginx)
-docker-compose build backend
-docker-compose up -d backend
+# Build and start all services (backend, frontend container, and monitor)
+docker-compose build
+docker-compose up -d
 
 # Verify deployment
 docker-compose ps
 curl https://comethunter.skywu.me/api/health
+
+# Check monitor logs to ensure it's running
+docker-compose logs monitor | head -20
 ```
 
 ### 7. Setup SSL (after DNS points to server)
@@ -128,6 +131,12 @@ curl https://comethunter.skywu.me/api/health
 
 # Test frontend
 curl -I https://comethunter.skywu.me/
+
+# Check monitor service is running
+docker-compose ps
+
+# View monitor logs
+docker-compose logs monitor | tail -10
 
 # Check browser at https://comethunter.skywu.me/
 ```
@@ -166,14 +175,26 @@ cd ..
 # Reload nginx if frontend changed
 sudo nginx -t && sudo systemctl reload nginx
 
-# Update backend
-docker-compose build backend
-docker-compose up -d backend
+# Update all services
+docker-compose build
+docker-compose up -d
+
+# Check monitor logs after update
+docker-compose logs monitor | tail -10
 ```
 
 ## Check Status
 ```bash
+# Check all services status
 docker-compose ps
+
+# Check individual service logs
 docker-compose logs backend
+docker-compose logs monitor
+
+# Check API health
 curl http://localhost:8000/api/health
+
+# Monitor real-time logs for monitor service
+docker-compose logs -f monitor
 ```
