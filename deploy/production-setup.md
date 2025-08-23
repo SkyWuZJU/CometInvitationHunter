@@ -48,28 +48,88 @@ sudo apt update && sudo apt install nginx
 git clone https://github.com/SkyWuZJU/CometInvitationHunter comet-hunter
 cd comet-hunter
 
-# Make deploy script executable
-chmod +x deploy.sh
-
 # Configure environment
 mkdir -p config                # Create config directory if it doesn't exist
 nano config/production.env     # Add your API keys
+
+# Build frontend
+cd frontend
+npm install
+npm run build
+cd ..
+
+# Create nginx site configuration (serves built files directly)
+sudo tee /etc/nginx/sites-available/comethunter > /dev/null << 'EOF'
+server {
+    listen 80;
+    server_name comethunter.skywu.me;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name comethunter.skywu.me;
+
+    ssl_certificate /etc/letsencrypt/live/comethunter.skywu.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/comethunter.skywu.me/privkey.pem;
+
+    root /home/admin/comet-hunter/frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /assets/ {
+        root /home/admin/comet-hunter/frontend/dist;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+EOF
+
+# Enable the site and remove default to avoid conflicts
+sudo ln -sf /etc/nginx/sites-available/comethunter /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl reload nginx
 ```
 
 ### 6. Deploy
 ```bash
-./deploy.sh
+# Start backend only (frontend is served directly by nginx)
+docker-compose build backend
+docker-compose up -d backend
+
+# Verify deployment
+docker-compose ps
+curl https://comethunter.skywu.me/api/health
 ```
 
 ### 7. Setup SSL (after DNS points to server)
 ```bash
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d comethunter.skywu.me
+# Select option 2 to redirect HTTP to HTTPS when prompted
 ```
 
 ### 8. Verify deployment
 ```bash
-curl http://comethunter.skywu.me/api/health
+# Test API endpoint
+curl https://comethunter.skywu.me/api/health
+
+# Test frontend
+curl -I https://comethunter.skywu.me/
+
+# Check browser at https://comethunter.skywu.me/
 ```
 
 ## Manual Steps (if needed)
@@ -94,8 +154,21 @@ sudo certbot --nginx -d comethunter.skywu.me
 
 ## Update Process
 ```bash
+# Pull latest changes
 git pull origin main
-./deploy.sh
+
+# Build frontend if updated
+cd frontend
+npm install
+npm run build
+cd ..
+
+# Reload nginx if frontend changed
+sudo nginx -t && sudo systemctl reload nginx
+
+# Update backend
+docker-compose build backend
+docker-compose up -d backend
 ```
 
 ## Check Status
