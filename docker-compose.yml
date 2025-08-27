@@ -9,6 +9,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - .:/app
     env_file:
       - config/production.env
     restart: unless-stopped
@@ -37,6 +38,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - .:/app
     env_file:
       - config/production.env
     restart: unless-stopped
