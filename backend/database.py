@@ -13,6 +13,7 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError, IntegrityError
 import logging
 import functools
 from collections import namedtuple
+from backend.welcome_email import welcome_email_sender
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -202,7 +203,7 @@ def health_check() -> bool:
 
 # Database operation helpers
 def add_user(db: Session, email: str) -> Optional[User]:
-    """Add a new user with retry logic"""
+    """Add a new user with retry logic and send welcome email"""
     def operation():
         # Check if user already exists
         existing_user = db.query(User).filter(User.email == email).first()
@@ -218,7 +219,26 @@ def add_user(db: Session, email: str) -> Optional[User]:
         return user
     
     try:
-        return execute_with_retry(db, operation)
+        # # Check if user already exists before attempting creation
+        # existing_user = db.query(User).filter(User.email == email).first()
+        # if existing_user:
+        #     logger.info(f"User with email {email} already exists")
+        #     return existing_user
+            
+        # Create new user
+        user = execute_with_retry(db, operation)
+        if user:
+            # This is a new user, send welcome email
+            try:
+                email_sent = welcome_email_sender.send_welcome_email(email)
+                if email_sent:
+                    logger.info(f"Welcome email sent successfully to new user: {email}")
+                else:
+                    logger.warning(f"Failed to send welcome email to new user: {email}")
+            except Exception as e:
+                logger.error(f"Error sending welcome email to {email}: {e}")
+                # Don't fail user creation if email fails
+        return user
     except SQLAlchemyError as e:
         logger.error(f"Failed to add user {email}: {e}")
         return None
