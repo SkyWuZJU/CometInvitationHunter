@@ -11,9 +11,13 @@ from pathlib import Path
 # Add backend directory to Python path
 backend_dir = Path(__file__).parent
 sys.path.insert(0, str(backend_dir))
+sys.path.insert(0, str(backend_dir.parent))
 
 # Load environment configuration
-from config import config
+try:
+    from backend.config import config
+except ImportError:
+    from config import config
 
 def main():
     """Start the FastAPI backend service"""
@@ -40,7 +44,10 @@ def main():
     
     # Import and run the FastAPI app
     import uvicorn
-    from main import app
+    try:
+        from backend.main import app
+    except ImportError:
+        from main import app
     
     uvicorn.run(
         app,
