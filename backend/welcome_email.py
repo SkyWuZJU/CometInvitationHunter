@@ -9,7 +9,7 @@ from typing import Optional
 
 import resend
 
-from backend.config import config
+from config import config
 
 logger = logging.getLogger(__name__)
 

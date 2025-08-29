@@ -13,7 +13,7 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError, IntegrityError
 import logging
 import functools
 from collections import namedtuple
-from backend.welcome_email import welcome_email_sender
+from welcome_email import welcome_email_sender
 
 # Configure logging
 logger = logging.getLogger(__name__)
