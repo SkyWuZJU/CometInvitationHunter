@@ -13,7 +13,12 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError, IntegrityError
 import logging
 import functools
 from collections import namedtuple
-from welcome_email import welcome_email_sender
+
+# Handle welcome_email import for both local and Docker environments
+try:
+    from backend.welcome_email import welcome_email_sender
+except ImportError:
+    from welcome_email import welcome_email_sender
 
 # Configure logging
 logger = logging.getLogger(__name__)

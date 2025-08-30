@@ -17,21 +17,27 @@ from sqlalchemy.orm import Session
 import sys
 import os
 
-# Add the project root to Python path for local development
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, project_root)
+# Import configuration and modules with proper path handling for Docker
 
 try:
-    from backend.config import config
-    from backend.database import get_db, init_database, health_check, add_user
-    from backend.utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
-    from backend.twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
-except ImportError:
-    # Fallback for direct module imports
     from config import config
     from database import get_db, init_database, health_check, add_user
     from utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
     from twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
+except ImportError as e:
+    logger.error(f"Import error: {e}")
+    # Fallback for different import paths
+    try:
+        from backend.config import config
+        from backend.database import get_db, init_database, health_check, add_user
+        from backend.utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
+        from backend.twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
+    except ImportError:
+        # Last resort - try relative imports
+        from .config import config
+        from .database import get_db, init_database, health_check, add_user
+        from .utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
+        from .twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
 
 # Configure basic logging
 import logging
