@@ -16,39 +16,40 @@ from sqlalchemy.orm import Session
 
 import sys
 import os
-
-# Import configuration and modules with proper path handling for Docker
-
-try:
-    from config import config
-    from database import get_db, init_database, health_check, add_user
-    from utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
-    from twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
-except ImportError as e:
-    logger.error(f"Import error: {e}")
-    # Fallback for different import paths
-    try:
-        from backend.config import config
-        from backend.database import get_db, init_database, health_check, add_user
-        from backend.utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
-        from backend.twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
-    except ImportError:
-        # Last resort - try relative imports
-        from .config import config
-        from .database import get_db, init_database, health_check, add_user
-        from .utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
-        from .twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
-
-# Configure basic logging
 import logging
 from contextlib import contextmanager
 
-# Set up basic logging
+# Set up basic logging first (before any imports that might fail)
 logging.basicConfig(
-    level=getattr(logging, config.log_level.upper()),
+    level=logging.INFO,  # Default level, will be updated after config loads
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Import configuration and modules with proper path handling for Docker
+# Ensure we can find modules in the backend directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+backend_dir = os.path.join(current_dir)  # We're already in backend directory
+project_root = os.path.dirname(current_dir)
+
+# Add backend directory to Python path for module resolution
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# Import modules
+from config import config
+from database import get_db, init_database, health_check, add_user
+from utools_client import UtoolsClient, UtoolsError, RateLimitError, AuthenticationError
+from twitter_oauth import TwitterOAuthClient, TwitterOAuthError, store_oauth_token_secret, get_oauth_token_secret, cleanup_oauth_token
+logger.info("Successfully imported all modules")
+
+# Update logging level based on config
+try:
+    logging.getLogger().setLevel(getattr(logging, config.log_level.upper()))
+except Exception as e:
+    logger.warning(f"Could not set log level from config: {e}")
 
 # Simple error context manager
 @contextmanager
