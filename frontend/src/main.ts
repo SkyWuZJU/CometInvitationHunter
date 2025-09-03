@@ -50,7 +50,7 @@ class CometHunterApp {
     app.innerHTML = `
       <div class="container">
         <div class="logo">🚀 Comet Hunter</div>
-        <div class="subtitle">Get notified when Comet browser invitations are shared on X</div>
+        <div class="subtitle">Subscribe the Email, and get intime notification when someone shares Comet invitations on X</div>
         
         <div class="step-indicator">
           <div class="step active" id="step1"></div>
@@ -61,8 +61,8 @@ class CometHunterApp {
         <!-- Step 1: Email Collection -->
         <div id="email-step" class="step-content">
           <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="Enter your email address" required>
+            <label for="email">Step1: Email Address</label>
+            <input type="email" id="email" placeholder="" required>
           </div>
           <button class="btn" id="email-submit">Continue</button>
         </div>
@@ -70,15 +70,15 @@ class CometHunterApp {
         <!-- Step 2: X OAuth Verification -->
         <div id="verification-step" class="step-content hidden">
           <div class="verification-info">
-            <h3>Connect Your X Account</h3>
-            <p>To receive Comet invitation notifications, you need to:</p>
+            <h3>Step2: Follow and Subscribe</h3>
+            <p>Follow the creator on X and get the service for FREE:</p>
             <ol style="margin: 15px 0; padding-left: 20px; text-align: left;">
-              <li>Connect your X account securely via OAuth</li>
-              <li>Make sure you follow <strong>@0xSky99</strong> on X</li>
+              <li>Follow <strong>@0xSky99</strong> on X</li>
+              <li>Verify your X account</li>
             </ol>
             <p>
               <a href="https://x.com/0xSky99" target="_blank" rel="noopener noreferrer">
-                → Follow @0xSky99 on X first
+                → Follow @0xSky99
               </a>
             </p>
           </div>
@@ -107,7 +107,7 @@ class CometHunterApp {
           <div class="success-message">
             <h3>🎉 You're all set!</h3>
             <p>You'll receive email notifications whenever new Comet browser invitations are shared on X.</p>
-            <p>Keep an eye on your inbox for the latest opportunities!</p>
+            <p>A initialization Email has been sent. Make sure it's not in the spam and the Email address is trusted.</p>
           </div>
         </div>
 
