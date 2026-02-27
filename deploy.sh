@@ -9,7 +9,9 @@ echo "🚀 Starting Comet Hunter deployment..."
 
 # Update production config
 echo "📋 Updating production configuration..."
-sed -i 's/CORS_ORIGINS=https:\/\/yourdomain.com/CORS_ORIGINS=https:\/\/comethunter.skywu.me/g' config/production.env
+DOMAIN=${DOMAIN:-yourdomain.com}
+APP_URL="https://${DOMAIN}"
+sed -i "s|CORS_ORIGINS=https://yourdomain.com|CORS_ORIGINS=${APP_URL}|g" config/production.env
 
 # Build and start services
 echo "🔧 Building Docker containers..."
@@ -44,7 +46,7 @@ sudo ln -sf /etc/nginx/sites-available/comethunter /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 
 echo "✅ Deployment complete!"
-echo "🌐 Access your app at: https://comethunter.skywu.me"
+echo "🌐 Access your app at: ${APP_URL}"
 echo ""
 echo "To update in the future:"
 echo "  git pull origin main"

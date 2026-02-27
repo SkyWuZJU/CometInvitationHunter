@@ -52,7 +52,7 @@ The email notification system has been upgraded from SMTP to use Resend's HTTP A
 ```bash
 # Required
 RESEND_API_KEY=re_your_api_key_here
-FROM_EMAIL=comethunter@skywu.me
+FROM_EMAIL=your_verified_email@yourdomain.com
 
 # Optional (for custom domain)
 FROM_EMAIL=noreply@yourdomain.com

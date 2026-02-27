@@ -66,3 +66,6 @@ htmlcov/
 # Temporary files
 *.tmp
 *.temp
+# SQL dumps
+*.sql
+!schema.sql
