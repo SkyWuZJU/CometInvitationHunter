@@ -53,8 +53,8 @@
 
 相关文件如下：
 - Dockerfile – 轻量级容器配置
-- docker-compose.yml – 服务编排文件
-- nginx.conf – 反向代理配置
+- docker-compose.yml – 服务编排配置
+- nginx.conf – 反向代理设置
 - deploy.sh – 一键部署脚本
 - deploy/production-setup.md – 完整的部署指南
 
@@ -62,10 +62,10 @@
 - 使用 SQLite 简化部署流程（无需外部数据库）
 - 后端仅需单个 Docker 容器即可运行
 - Nginx 负责提供前端页面并转发 API 请求
-- 通过执行 `./deploy.sh` 即可完成手动更新
+- 可通过运行 ./deploy.sh 手动更新系统
 - 已针对 comethunter.skywu.me 完成配置
 
 部署步骤：
-1. 将代码上传至 Linux 服务器
-2. 运行 `./deploy.sh`
-3. 使用 `certbot --nginx -d comethunter.skywu.me` 配置 SSL 证书
+1. 将文件上传至 Linux 服务器
+2. 执行 ./deploy.sh
+3. 使用 certbot --nginx -d comethunter.skywu.me 配置 SSL 证书
