@@ -1,5 +1,10 @@
 # Comet Invitation Hunter
 
+<!-- hy-mt2-i18n:start -->
+[English](./README.md) | [中文](./README.zh-CN.md) | [Español](./README_es.md)
+<!-- hy-mt2-i18n:end -->
+
+
 A system to monitor Twitter for invitation codes and automatically respond to them.
 
 ## Project Structure
