@@ -6,7 +6,7 @@
 
 ```
 ├── backend/          # FastAPI 后端服务
-├── frontend/         # 基于 TypeScript/Vite 的前端
+├── frontend/         # 基于 TypeScript/Vite 的前端界面
 ├── monitor/          # 后台监控服务
 ├── config/           # 环境配置文件
 └── setup_env.sh      # 环境初始化脚本
@@ -53,16 +53,16 @@
 
 相关文件如下：
 - Dockerfile – 轻量级容器配置
-- docker-compose.yml – 服务编排配置
+- docker-compose.yml – 服务编排文件
 - nginx.conf – 反向代理设置
 - deploy.sh – 一键部署脚本
 - deploy/production-setup.md – 完整的部署指南
 
 主要特性：
-- 使用 SQLite 简化部署流程（无需外部数据库）
+- 使用 SQLite 作为数据库（无需额外数据库服务）
 - 后端仅需单个 Docker 容器即可运行
-- Nginx 负责提供前端页面并转发 API 请求
-- 可通过运行 ./deploy.sh 手动更新系统
+- 通过 Nginx 同时提供前端页面与 API 代理服务
+- 可通过运行 ./deploy.sh 手动完成更新操作
 - 已针对 comethunter.skywu.me 完成配置
 
 部署步骤：

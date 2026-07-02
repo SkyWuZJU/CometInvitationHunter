@@ -5,14 +5,14 @@ Un sistema que monitorea Twitter en busca de códigos de invitación y responde 
 ## Estructura del proyecto
 
 ```
-├── backend/          # Servicio backend basado en FastAPI
-├── frontend/         # Interfaz frontend desarrollada con TypeScript/Vite
+├── backend/          # Servicio backend desarrollado con FastAPI
+├── frontend/         # Interfaz frontend desarrollada en TypeScript/Vite
 ├── monitor/          # Servicio de monitoreo en segundo plano
 ├── config/           # Archivos de configuración del entorno
 └── setup_env.sh      # Script para configurar el entorno
 ```
 
-## Configuración inicial
+## Instalación
 
 1. Ejecute el script de configuración para crear el entorno virtual de Python:
    ```bash
@@ -50,22 +50,21 @@ Un sistema que monitorea Twitter en busca de códigos de invitación y responde 
 - Entorno de producción: `config/production.env`
 
 ## Despliegue en producción
-
 Archivos relacionados:
-- Dockerfile: Configuración de un contenedor ligero.
-- docker-compose.yml: Orquestación de los servicios.
-- nginx.conf: Configuración del proxy inverso.
-- deploy.sh: Script para desplegar con un solo comando.
-- deploy/production-setup.md: Guía completa de configuración.
+- Dockerfile - Configuración de contenedores ligeros
+- docker-compose.yml - Orquestación de servicios
+- nginx.conf - Configuración del proxy inverso
+- deploy.sh - Script para despliegue con un solo comando
+- deploy/production-setup.md - Guía completa de configuración
 
 Características principales:
-- Utiliza SQLite por su simplicidad (no se requiere base de datos externa).
-- Un único contenedor Docker para el backend.
-- Nginx sirve la interfaz frontend y redirige las solicitudes a la API.
-- Las actualizaciones se realizan manualmente mediante el script ./deploy.sh.
-- El sistema está configurado para operar en comethunter.skywu.me.
+- Utiliza SQLite por su simplicidad (no se requiere base de datos externa)
+- Un único contenedor Docker para el backend
+- Nginx sirve la interfaz frontend y redirige las solicitudes a la API
+- Las actualizaciones se realizan manualmente mediante el script ./deploy.sh
+- Está configurado para funcionar en comethunter.skywu.me
 
 Pasos para el despliegue:
 1. Suba los archivos al servidor Linux.
 2. Ejecute el script ./deploy.sh.
-3. Configure el certificado SSL usando certbot --nginx -d comethunter.skywu.me.
+3. Configure el certificado SSL mediante `certbot --nginx -d comethunter.skywu.me`.
