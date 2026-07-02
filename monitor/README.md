@@ -1,5 +1,10 @@
 # Comet Invitation Hunter - Background Monitoring Service
 
+<!-- hy-mt2-i18n:start -->
+[English](./README.md) | [中文](./README.zh-CN.md) | [Español](./README_es.md)
+<!-- hy-mt2-i18n:end -->
+
+
 This directory contains the background monitoring service that continuously searches X (Twitter) for Comet browser invitation posts and sends email notifications to verified users.
 
 ## Overview
