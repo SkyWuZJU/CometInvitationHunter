@@ -2,7 +2,7 @@
 
 Un sistema para monitorear Twitter en busca de códigos de invitación de Comet y responder a ellos automáticamente.
 
-**Comet** es un navegador web nativo de IA desarrollado por **Perplexity**, que redefine la forma en que las personas navegan por Internet. En lugar de tratar a la IA como un chatbot independiente, Comet integra la asistencia de IA directamente en la experiencia de navegación, permitiendo a los usuarios buscar, resumir páginas, responder preguntas y completar tareas complejas sin tener que cambiar constantemente entre pestañas o aplicaciones. Al combinar el acceso en tiempo real a la web con el razonamiento inteligente, Comet tiene como objetivo hacer que la investigación, el descubrimiento de información y los flujos de trabajo diarios en Internet sean significativamente más rápidos y eficientes.
+**Comet** es un navegador web nativo de IA desarrollado por **Perplexity**, que integra la inteligencia artificial directamente en la experiencia de navegación, lo que hace que las búsquedas, las investigaciones y las tareas cotidianas en la web sean más rápidas y eficientes.
 
 
 ## Estructura del proyecto
@@ -47,10 +47,10 @@ Un sistema para monitorear Twitter en busca de códigos de invitación de Comet 
    npm run dev
    ```
 
-## Configuraciones
+## Configuración
 
-- Para desarrollo: `config/development.env`
-- Para producción: `config/production.env`
+- Desarrollo: `config/development.env`
+- Producción: `config/production.env`
 
 ## Despliegue en producción
 Archivos relacionados:
@@ -61,13 +61,13 @@ Archivos relacionados:
 - deploy/production-setup.md - Guía completa de configuración
 
 Características principales:
-- Utiliza SQLite por su simplicidad (no se necesita base de datos externa)
+- Utiliza SQLite por su simplicidad (no se necesita una base de datos externa)
 - Un único contenedor Docker para el backend
-- Nginx sirve al frontend y también hace de proxy para las APIs
+- Nginx sirve al frontend y proxyea las API
 - Actualizaciones manuales mediante./deploy.sh
-- Configurado específicamente para comethunter.skywu.me
+- Configurado para comethunter.skywu.me
 
 Para desplegar:
 1. Suba los archivos a su servidor Linux
 2. Ejecute./deploy.sh
-3. Añada el certificado SSL con certbot --nginx -d comethunter.skywu.me
+3. Agregue SSL con certbot --nginx -d comethunter.skywu.me
