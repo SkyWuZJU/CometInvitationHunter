@@ -1,0 +1,22 @@
+{
+  "sourceReadme": "README.md",
+  "targets": [
+    {
+      "language": "zh-CN",
+      "path": "README.zh-CN.md",
+      "label": "中文"
+    },
+    {
+      "language": "es",
+      "path": "README_es.md",
+      "label": "西班牙语"
+    }
+  ],
+  "apiKeyEnv": "TENCENT_HUNYUAN_API_KEY",
+  "baseUrl": "https://tokenhub.tencentmaas.com/v1",
+  "model": "hy-mt2-plus",
+  "managedBlock": {
+    "start": "<!-- hy-mt2-i18n:start -->",
+    "end": "<!-- hy-mt2-i18n:end -->"
+  }
+}
