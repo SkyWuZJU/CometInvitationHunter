@@ -2,7 +2,7 @@
 
 A system to monitor Twitter for Comet invitation codes and automatically respond to them.
 
-**Comet** is an AI-native web browser developed by **Perplexity** that rethinks how people browse the web. Instead of treating AI as a separate chatbot, Comet integrates AI assistance directly into the browsing experience, enabling users to search, summarize pages, answer questions, and complete complex tasks without constantly switching between tabs or applications. By combining real-time web access with intelligent reasoning, Comet aims to make research, information discovery, and everyday web workflows significantly faster and more efficient.
+**Comet** is an AI-native web browser developed by **Perplexity** that integrates AI directly into the browsing experience, making search, research, and everyday web tasks faster and more efficient.
 
 
 ## Project Structure
